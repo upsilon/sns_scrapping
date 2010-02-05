@@ -1,0 +1,93 @@
+[commu_id]
+match {
+<li id="cLocalNav_1"><a href="\?m=pc&amp;a=page_c_home&amp;target_c_commu_id=(\d+)">コミュニティトップ</a></li>
+}
+
+[commu_name]
+match {
+<div class="partsHeading"><h3>\[(.+?)\] トピック</h3></div>
+}
+
+[topic_date]
+match {
+<dl>
+<dt>(\d+)年(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+<dd>
+}
+output {
+$1/$2/$3 $4:$5
+}
+
+[topic_title]
+match {
+<div class="title">
+<p>(.+)</p>
+</div>
+}
+
+[topic_memmber_id]
+match {
+<p><a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">.+?</a></p>
+}
+
+[topic_member_name]
+match {
+<p><a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">(.+?)</a></p>
+}
+
+[topic_body]
+match {
+(?s)<div class="body">
+(.*?)<p class="text">
+(.+?)
+</p>
+</div>
+}
+output {
+$1$2
+}
+
+[comment_date]
+multi = true
+match {
+<dl>
+\s*<dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+\s*<dd>
+\s*<div class="title">
+\s*<p class="heading"><strong>
+}
+output {
+$1/$2/$3 $4:$5
+}
+
+[comment_id]
+multi = true
+match {
+<p class="heading"><strong>(\d+)</strong>:
+}
+
+[comment_member_id]
+multi = true
+match {
+<p class="heading"><strong>\d+</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">.*?</a>
+}
+
+[comment_member_name]
+multi = true
+match {
+<p class="heading"><strong>\d+</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">(.*?)</a>
+}
+
+[comment_body]
+multi = true
+match {
+(?s)<p class="heading"><strong>[^\n]+
+\s*</div>\s*
+<div class="body">
+(.*?)<p class="text">(.+?)</p>
+\s*</div>
+}
+output {
+$1$2
+}
+
