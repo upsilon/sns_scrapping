@@ -3,6 +3,12 @@
   $ javac ScrappingScript.java
   $ java ScrappingScript ./diary.txt <日記ページのHTMLファイル>
 
+  ※ 日記以外にも、
+      ・diarylist.txt (日記一覧)
+      ・topic.txt (トピック)
+      ・event.txt (イベント)
+     のページからも取得可能です
+
 
 とりあえず中身の説明
 
