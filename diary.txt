@@ -1,0 +1,75 @@
+[author]
+match {
+<div class=\"partsHeading\"><h3>(.+?)さんの日記</h3>
+}
+
+[public]
+match {
+<p class="public">
+（(.+?)）
+</p>
+}
+
+[date]
+match {
+<dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+}
+output {
+$1/$2/$3 $4:$5
+}
+
+[title]
+match {
+<p class="heading">(.+?)</p>
+}
+
+[body]
+match {
+(?s)<div class="body">
+(.+?)
+</div>
+}
+
+[comment_id]
+multi = true
+match {
+<p class="heading"><strong>(\d+)</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">[^<]+</a></p>
+}
+
+[comment_date]
+multi = true
+match {
+(?s)<dl>
+<dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+\s*<dd>\s*
+<div class="title">
+<p class="heading"><strong>
+}
+output {
+$1/$2/$3 $4:$5
+}
+
+[comment_member_id]
+multi = true
+match {
+<p class="heading"><strong>\d+</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">[^<]+</a></p>
+}
+
+[comment_member_name]
+multi = true
+match {
+<p class="heading"><strong>\d+</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">([^<]+)</a></p>
+}
+
+[comment_body]
+multi = true
+match {
+(?s)<p class="heading"><strong>[^\n]+
+\s*</div>
+<div class="body">
+(.*?)<p class="text">(.+?)</p>
+\s*</div>
+}
+output {
+$1$2
+}
