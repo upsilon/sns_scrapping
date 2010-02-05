@@ -1,0 +1,6 @@
+[diaryid]
+multi = true
+match {
+ \| <a href="./\?m=pc&amp;a=page_fh_diary&amp;target_c_diary_id=(\d+)">もっと読む</a>
+}
+
