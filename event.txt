@@ -1,0 +1,113 @@
+[commu_id]
+match {
+<li id="cLocalNav_1"><a href="\?m=pc&amp;a=page_c_home&amp;target_c_commu_id=(\d+)">コミュニティトップ</a></li>
+}
+
+[commu_name]
+match {
+<div class="partsHeading"><h3>\[(.+?)\] イベント</h3></div>
+}
+
+[event_date]
+match {
+<dl>
+<dt>(\d+)年(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+<dd>
+}
+output {
+$1/$2/$3 $4:$5
+}
+
+[event_title]
+match {
+<th>タイトル</th>
+<td>(.+)</td>
+}
+
+[event_memmber_id]
+match {
+<td><a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">.+?</a></td>
+}
+
+[event_member_name]
+match {
+<td><a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">(.+?)</a></td>
+}
+
+[event_open_date]
+match {
+<th>開催日時</th>
+<td>(\d+)-(\d+)-(\d+)&nbsp;(.*?)</td>
+}
+output {
+$1/$2/$3 $4
+}
+
+[event_open_pref]
+match {
+<th>開催場所</th>
+<td>(.+)</td>
+}
+
+[event_body]
+match {
+(?s)<th>詳細</th>
+<td>(.+?)</td>
+}
+
+[event_period_date]
+match {
+<th>募集期限</th>
+<td>(\d+-\d+-\d+|指定なし)</td>
+}
+
+[event_capacity]
+match {
+<th>募集人数</th>
+<td>(\d+人|無制限)</td>
+}
+
+[comment_date]
+multi = true
+match {
+<dl>
+<dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+<dd>
+<div class="title">
+<p class="heading"><strong>
+}
+output {
+$1/$2/$3 $4:$5
+}
+
+[comment_id]
+multi = true
+match {
+<p class="heading"><strong>(\d+)</strong>:
+}
+
+[comment_member_id]
+multi = true
+match {
+<p class="heading"><strong>\d+</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">.*?</a>
+}
+
+[comment_member_name]
+multi = true
+match {
+<p class="heading"><strong>\d+</strong>: <a href="./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">(.*?)</a>
+}
+
+[comment_body]
+multi = true
+match {
+(?s)<p class="heading"><strong>[^\n]+
+</div>
+<div class="body">
+(.*?)<p class="text">(.+?)</p>
+</div>
+}
+output {
+$1$2
+}
+
