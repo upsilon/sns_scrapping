@@ -51,10 +51,10 @@ $1$2
 multi = true
 match {
 <dl>
-\s*<dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
-\s*<dd>
-\s*<div class="title">
-\s*<p class="heading"><strong>
+<dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+<dd>
+<div class="title">
+<p class="heading"><strong>
 }
 output {
 $1/$2/$3 $4:$5
@@ -82,10 +82,10 @@ match {
 multi = true
 match {
 (?s)<p class="heading"><strong>[^\n]+
-\s*</div>\s*
+</div>
 <div class="body">
 (.*?)<p class="text">(.+?)</p>
-\s*</div>
+</div>
 }
 output {
 $1$2

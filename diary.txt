@@ -41,7 +41,7 @@ multi = true
 match {
 (?s)<dl>
 <dt>(\d+)年<br />(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
-\s*<dd>\s*
+<dd>
 <div class="title">
 <p class="heading"><strong>
 }
@@ -65,10 +65,10 @@ match {
 multi = true
 match {
 (?s)<p class="heading"><strong>[^\n]+
-\s*</div>
+</div>
 <div class="body">
 (.*?)<p class="text">(.+?)</p>
-\s*</div>
+</div>
 }
 output {
 $1$2
