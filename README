@@ -1,7 +1,7 @@
 とりあえず使う
   ※ まだHTMLの取得は実装していないので、各自手動でコピーしてください。
   $ javac ScrappingScript.java
-  $ java ScrappingScript ./diary.txt (日記ページのHTMLファイル)
+  $ java ScrappingScript ./diary.txt <日記ページのHTMLファイル>
 
 
 とりあえず中身の説明
