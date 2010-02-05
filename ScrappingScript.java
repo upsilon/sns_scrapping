@@ -53,6 +53,15 @@ public class ScrappingScript
               s.multi = true;
             }
           }
+          else if (line.startsWith("ign_blankline"))
+          {
+            int start = line.indexOf("=");
+            String bool = line.substring(start + 1).trim();
+            if (bool.equalsIgnoreCase("false"))
+            {
+              s.ign_blankline = false;
+            }
+          }
           else if (line.endsWith("{"))
           {
             String blockName = line.substring(0, line.length() - 1).trim();
@@ -78,7 +87,16 @@ public class ScrappingScript
             if (blockName.equals("match"))
             {
               String match;
-              match = block.toString().replace("\n", "\\n");
+
+              if (s.ign_blankline)
+              {
+                match = block.toString().replace("\n", "\\n\\s*");
+              }
+              else
+              {
+                match = block.toString().replace("\n", "\\n");
+              }
+
               s.pattern = Pattern.compile(match);
             }
             else if (blockName.equals("output"))
@@ -157,5 +175,6 @@ public class ScrappingScript
     public Pattern pattern;
     public String output = "$1";
     public boolean multi = false;
+    public boolean ign_blankline = true;
   }
 }
