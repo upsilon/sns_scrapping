@@ -131,8 +131,10 @@ public class ScrappingScript
       ArrayList<String> list = new ArrayList<String>();
       while (matcher.find())
       {
-        Matcher replaceMatch = pattern.pattern.matcher(matcher.group());
-        String output = replaceMatch.replaceAll(pattern.output);
+        String output;
+
+        matcher.reset(matcher.group());
+        output = matcher.replaceAll(pattern.output);
 
         list.add(output);
 
