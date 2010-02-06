@@ -120,9 +120,11 @@ public class ScrappingScript
     reader.close();
   }
 
-  public HashMap<String, String[]> scrappingAll(String str)
+  public HashMap<String, ArrayList<String>> scrappingAll(String str)
   {
-    HashMap<String, String[]> result = new HashMap<String, String[]>();
+    HashMap<String, ArrayList<String>> result =
+      new HashMap<String, ArrayList<String>>();
+
     for (Map.Entry<String, ScrappingPattern> entry : pattern.entrySet())
     {
       ScrappingPattern pattern = entry.getValue();
@@ -143,7 +145,7 @@ public class ScrappingScript
           break;
         }
       }
-      result.put(entry.getKey(), list.toArray(new String[0]));
+      result.put(entry.getKey(), list);
     }
 
     return result;
@@ -155,20 +157,21 @@ public class ScrappingScript
     throws Exception // 例外処理丸投げ
   {
     BufferedReader reader = new  BufferedReader(new FileReader(args[1]));
-    String text = "", line;
+    StringBuilder text = new StringBuilder();
+    String line;
     while ((line = reader.readLine()) != null)
     {
-      text += line + '\n';
+      text.append(line).append('\n');
     }
     reader.close();
 
-    HashMap<String, String[]> result =
-      new ScrappingScript(args[0]).scrappingAll(text);
+    HashMap<String, ArrayList<String>> result =
+      new ScrappingScript(args[0]).scrappingAll(text.toString());
 
-    for (Map.Entry<String, String[]> entry : result.entrySet())
+    for (Map.Entry<String, ArrayList<String>> entry : result.entrySet())
     {
-      System.out.print(entry.getKey() + " (" + entry.getValue().length + "): ");
-      System.out.println(Arrays.toString(entry.getValue()));
+      System.out.print(entry.getKey() + " (" + entry.getValue().size() + "): ");
+      System.out.println(entry);
     }
   }
 
