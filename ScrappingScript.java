@@ -171,7 +171,7 @@ public class ScrappingScript
     for (Map.Entry<String, ArrayList<String>> entry : result.entrySet())
     {
       System.out.print(entry.getKey() + " (" + entry.getValue().size() + "): ");
-      System.out.println(entry);
+      System.out.println(entry.getValue());
     }
   }
 
