@@ -51,8 +51,8 @@ match {
 
 [event_body]
 match {
-(?s)<th>詳細</th>
-<td>(.+?)</td>
+<th>詳細</th>
+<td>([\S\s]+?)</td>
 }
 
 [event_period_date]
@@ -101,10 +101,10 @@ match {
 [comment_body]
 multi = true
 match {
-(?s)<p class="heading"><strong>[^\n]+
+<p class="heading"><strong>.+
 </div>
 <div class="body">
-(.*?)<p class="text">(.+?)</p>
+([\S\s]*?)<p class="text">([\S\s]+?)</p>
 </div>
 }
 output {
