@@ -120,7 +120,7 @@ public class ScrappingScript
     reader.close();
   }
 
-  public HashMap<String, ArrayList<String>> scrappingAll(String str)
+  public ScrappingResult scrappingAll(String str)
   {
     HashMap<String, ArrayList<String>> result =
       new HashMap<String, ArrayList<String>>();
@@ -146,7 +146,7 @@ public class ScrappingScript
       result.put(entry.getKey(), list);
     }
 
-    return result;
+    return new ScrappingResult(result);
   }
 
   // このクラスのmainメソッドは実験用なので、かなり雑です。
@@ -163,10 +163,10 @@ public class ScrappingScript
     }
     reader.close();
 
-    HashMap<String, ArrayList<String>> result =
+    ScrappingResult result =
       new ScrappingScript(args[0]).scrappingAll(text.toString());
 
-    for (Map.Entry<String, ArrayList<String>> entry : result.entrySet())
+    for (Map.Entry<String, ArrayList<String>> entry : result)
     {
       System.out.print(entry.getKey() + " (" + entry.getValue().size() + "): ");
       System.out.println(entry.getValue());
