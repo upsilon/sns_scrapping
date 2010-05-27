@@ -12,12 +12,14 @@ public class ScrappingResult
 
   public String getOne(String key)
   {
-    return result.get(key).get(0);
+    ArrayList<String> list = result.get(key);
+    return list.isEmpty() ? null : list.get(0);
   }
 
   public ArrayList<String> getMulti(String key)
   {
-    return result.get(key);
+    ArrayList<String> list = result.get(key);
+    return list.isEmpty() ? null : list;
   }
 
   public Iterator<Map.Entry<String, ArrayList<String>>> iterator()
