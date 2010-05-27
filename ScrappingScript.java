@@ -162,7 +162,28 @@ public class ScrappingScript
   public static void main(String[] args)
     throws Exception // 例外処理丸投げ
   {
-    BufferedReader reader = new  BufferedReader(new FileReader(args[1]));
+    System.err.println(" * ファイルの読み込み");
+    String text = readAll(args[1]);
+
+    System.err.println(" * 正規表現の初期化");
+    ScrappingScript script = new ScrappingScript(args[0]);
+
+    System.err.println(" * スクレイピング開始");
+    ScrappingResult result = script.scrappingAll(text.toString());
+
+    System.err.println(" * 結果出力");
+
+    for (Map.Entry<String, ArrayList<String>> entry : result)
+    {
+      System.out.print(entry.getKey() + " (" + entry.getValue().size() + "): ");
+      System.out.println(entry.getValue());
+    }
+  }
+
+  private static String readAll(String file)
+    throws FileNotFoundException, IOException
+  {
+    BufferedReader reader = new  BufferedReader(new FileReader(file));
     StringBuilder text = new StringBuilder();
     String line;
     while ((line = reader.readLine()) != null)
@@ -171,14 +192,7 @@ public class ScrappingScript
     }
     reader.close();
 
-    ScrappingResult result =
-      new ScrappingScript(args[0]).scrappingAll(text.toString());
-
-    for (Map.Entry<String, ArrayList<String>> entry : result)
-    {
-      System.out.print(entry.getKey() + " (" + entry.getValue().size() + "): ");
-      System.out.println(entry.getValue());
-    }
+    return text.toString();
   }
 
   class ScrappingPattern
