@@ -1,0 +1,76 @@
+[member_id]
+match {
+<p class="photo"><img src="\./img\.php\?filename=m_(\d+)_[^"]+" alt="プロフィール写真" /></p>
+}
+
+[image_url]
+match {
+<p class="photo"><img src="([^"]+)" alt="プロフィール写真" /></p>
+}
+
+[rank]
+match {
+<p class="rank"><img src="[^"]+" alt="([^"]+)" /></p>
+}
+
+[point]
+match {
+<p class="point">(\d+) Point</p>
+}
+
+[name]
+match {
+<p class="text">(.+?)さん \(\d+\)</p>
+}
+
+[friend_id]
+multi = true
+match {
+<td><a href="\./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">.+? \(\d+\)</a></td>(?=[\S\s]+?マイフレンド管理)
+}
+
+[friend_name]
+multi = true
+match {
+<td><a href="\./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">(.+?) \(\d+\)</a></td>(?=[\S\s]+?マイフレンド管理)
+}
+
+[friend_num]
+match {
+<li><a href="\./\?m=pc&amp;a=page_fh_friend_list">全てを見る\((\d+)人\)</a></li>
+}
+
+[community_id]
+multi = true
+match {
+<td><a href="\./\?m=pc&amp;a=page_c_home&amp;target_c_commu_id=(\d+)">.+? \(\d+\)</a></td>
+}
+
+[community_name]
+multi = true
+match {
+<td><a href="\./\?m=pc&amp;a=page_c_home&amp;target_c_commu_id=\d+">(.+?) \(\d+\)</a></td>
+}
+
+[community_num]
+match {
+<li><a href="\./\?m=pc&amp;a=page_fh_com_list">全てを見る\((\d+)\)</a></li>
+}
+
+[favorite_id]
+multi = true
+match {
+<td><a href="\./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=(\d+)">.+? \(\d+\)</a></td>(?![\S\s]+?マイフレンド管理)
+}
+
+[favorite_name]
+multi = true
+match {
+<td><a href="\./\?m=pc&amp;a=page_f_home&amp;target_c_member_id=\d+">(.+?) \(\d+\)</a></td>(?![\S\s]+?マイフレンド管理)
+}
+
+[favorite_num]
+match {
+<li><a href="\./\?m=pc&amp;a=page_h_bookmark_list">全てを見る\((\d+)\)</a></li>
+}
+
