@@ -133,8 +133,16 @@ public class ScrappingScript
       ArrayList<String> list = new ArrayList<String>();
       while (matcher.find())
       {
-        Matcher replaceMatch = pattern.pattern.matcher(matcher.group());
-        String output = replaceMatch.replaceAll(pattern.output);
+        Matcher replaceMatch = pattern.pattern.matcher(str);
+        replaceMatch.region(matcher.start(), matcher.end());
+        replaceMatch.useTransparentBounds(true);
+
+        String output = new String(pattern.output);
+        replaceMatch.matches();
+        for (int i = 0; i <= replaceMatch.groupCount(); i++)
+        {
+          output = output.replaceAll("\\$" + i + "(?!\\d)", replaceMatch.group(i));
+        }
 
         list.add(output);
 
