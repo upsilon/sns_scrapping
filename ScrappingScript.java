@@ -46,18 +46,14 @@ public class ScrappingScript
 
           if (line.startsWith("multi"))
           {
-            int start = line.indexOf("=");
-            String bool = line.substring(start + 1).trim();
-            if (bool.equalsIgnoreCase("true"))
+            if (getValue(line).equalsIgnoreCase("true"))
             {
               s.multi = true;
             }
           }
           else if (line.startsWith("ign_blankline"))
           {
-            int start = line.indexOf("=");
-            String bool = line.substring(start + 1).trim();
-            if (bool.equalsIgnoreCase("false"))
+            if (getValue(line).equalsIgnoreCase("false"))
             {
               s.ign_blankline = false;
             }
@@ -118,6 +114,20 @@ public class ScrappingScript
     }
 
     reader.close();
+  }
+
+  private String getValue(String line)
+  {
+    int start = line.indexOf("=");
+
+    if (-1 != start)
+    {
+      return line.substring(start + 1).trim();
+    }
+    else
+    {
+      return null;
+    }
   }
 
   public ScrappingResult scrappingAll(String str)
