@@ -1,0 +1,7 @@
+[images]
+multi = true
+match {
+<td>
+<img src="(\./img.php\?filename=.+&amp;w=180&amp;h=180&amp;m=pc)" alt="" />
+</td>
+}

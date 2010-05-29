@@ -9,6 +9,7 @@ public class Member
 
   protected int       member_id;
   protected String    name      = null;
+  protected String    top_image_url = null;
   protected String[]  image_url = new String[3];
   protected int       point     = -1;
   protected String    rank      = null;
@@ -24,6 +25,7 @@ public class Member
 
   private static ScrappingScript scrapMypage = null;
   private static ScrappingScript scrapProfile = null;
+  private static ScrappingScript scrapProfileImages = null;
 
   static
   {
@@ -31,6 +33,7 @@ public class Member
     {
       scrapMypage = new ScrappingScript("mypage.txt");
       scrapProfile = new ScrappingScript("profile.txt");
+      scrapProfileImages = new ScrappingScript("profile_images.txt");
     }
     catch (IOException e)
     {
@@ -58,14 +61,13 @@ public class Member
 
   public String getTopImageURL()
   {
-    fetchProfileIf(null == image_url[0]);
-    return image_url[0];
+    fetchProfileIf(null == top_image_url);
+    return top_image_url;
   }
 
   public String[] getImageURLArray()
   {
-    // 2枚目以降の画像も取得されているか
-    fetchProfileImagesIf(null == image_url[3]);
+    fetchProfileImagesIf(null == image_url[0]);
     return image_url;
   }
 
@@ -107,7 +109,7 @@ public class Member
     Member m = sns.getMember(parseInt(scrap.getOne("member_id")));
 
     m.name = scrap.getOne("name");
-    m.image_url[0] = scrap.getOne("image_url");
+    m.top_image_url = scrap.getOne("image_url");
     m.point = parseInt(scrap.getOne("point"));
     m.rank = scrap.getOne("rank");
 
@@ -161,7 +163,7 @@ public class Member
       ScrappingResult scrap = scrapProfile.scrappingAll(html);
 
       name = scrap.getOne("name");
-      image_url[0] = scrap.getOne("image_url");
+      top_image_url = scrap.getOne("image_url");
 
       Map<String, String> profile = scrap.getMap("profile_name", "profile_value");
       point = parseInt(profile.get("ポイント"));
@@ -198,6 +200,29 @@ public class Member
 
   protected void fetchProfileImages()
   {
+    try
+    {
+      Http http = sns.getHttp();
+
+      HashMap<String, String> get = new HashMap<String, String>();
+      get.put("m", "pc");
+      get.put("a", "page_f_show_image");
+      get.put("target_c_member_id", Integer.toString(getMemberId()));
+
+      String html = http.get(sns.getUrl(), get);
+      ScrappingResult scrap = scrapProfileImages.scrappingAll(html);
+
+      List<String> images = scrap.getMulti("images");
+      for (int i = 0; i < images.size(); i++)
+      {
+        String image = images.get(i);
+        image_url[i] = image.contains("no_image") ? null : image;
+      }
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 
   protected void fetchFriendsIf(boolean bool)
