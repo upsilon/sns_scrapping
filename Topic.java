@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Topic extends AbstractPagable
+public class Topic extends AbstractPagable<Comment>
 {
   protected FetchSNS  sns;
 
@@ -10,6 +10,8 @@ public class Topic extends AbstractPagable
   protected String    title     = null;
   protected String    body      = null;
   protected ArrayList<Comment> comments = new ArrayList<Comment>();
+
+  private int total = -1;
 
   public Topic(FetchSNS sns, int topic_id)
   {
@@ -52,8 +54,23 @@ public class Topic extends AbstractPagable
     return comments.toArray(new Comment[0]);
   }
 
-  protected boolean fetchPage(int page)
+  protected int getLastFetched()
+  {
+    return comments.size();
+  }
+
+  protected int getTotal()
+  {
+    return total;
+  }
+
+  protected boolean fetchNextPage()
   {
     return true;
+  }
+
+  protected Comment doGetEntry(int count)
+  {
+    return comments.get(count);
   }
 }

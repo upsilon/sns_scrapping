@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Diary extends AbstractPagable
+public class Diary extends AbstractPagable<Comment>
 {
   protected FetchSNS  sns;
 
@@ -12,6 +12,8 @@ public class Diary extends AbstractPagable
   protected String[]    image_url   = new String[3];
 
   protected ArrayList<Comment> comments = new ArrayList<Comment>();
+
+  private int total = -1;
 
   public Diary(FetchSNS sns, int diary_id)
   {
@@ -60,9 +62,24 @@ public class Diary extends AbstractPagable
     return comments.toArray(new Comment[0]);
   }
 
-  protected boolean fetchPage(int page)
+  protected int getLastFetched()
+  {
+    return comments.size();
+  }
+
+  protected int getTotal()
+  {
+    return total;
+  }
+
+  protected boolean fetchNextPage()
   {
     return true;
+  }
+
+  protected Comment doGetEntry(int count)
+  {
+    return comments.get(count);
   }
 
   enum PublicEnum
