@@ -1,6 +1,11 @@
-[diaryid]
+[total]
+match {
+<div class="pagerRelative">.*<p class="number">(\d+)件中 \d+件～\d+件を表示</p>.*</div>
+}
+
+[diary_id]
 multi = true
 match {
- \| <a href="./\?m=pc&amp;a=page_fh_diary&amp;target_c_diary_id=(\d+)">もっと読む</a>
+ \| <a href="\./\?m=pc&amp;a=page_fh_diary&amp;target_c_diary_id=(\d+)">もっと読む</a>
 }
 
