@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Diary extends AbstractTopic
+public class Diary extends AbstractPagable
 {
   protected FetchSNS  sns;
 

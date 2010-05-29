@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Topic extends AbstractTopic
+public class Topic extends AbstractPagable
 {
   protected FetchSNS  sns;
 

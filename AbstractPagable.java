@@ -1,4 +1,4 @@
-public abstract class AbstractTopic
+public abstract class AbstractPagable
 {
   protected boolean hasNoNext = false;
 
