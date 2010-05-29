@@ -22,74 +22,81 @@ public class SnsScrapping
 
     for (;;)
     {
-      int select;
-
+      System.out.println();
       System.out.println("1 - メンバー");
       System.out.println("2 - コミュニティ");
       System.out.println("0 - 終了");
-      select = parseInt(console.readLine("番号を入力してください: "));
+      int select = parseInt(console.readLine("番号を入力してください: "));
 
-      if (select == 0)
+      switch (select)
       {
-        System.exit(0);
+        case 0:
+          System.exit(0);
+        case 1:
+          menuMember(console, sns);
+          break;
+        case 2:
+          menuCommunity(console, sns);
+          break;
+        default:
+          break;
       }
-      else if (select == 1)
-      {
-        Integer memberId;
-        memberId = Integer.parseInt(console.readLine("メンバーID: "));
+    }
+  }
 
-        Member member = sns.getMember(memberId);
-        System.out.println("メンバー名: " + member.getName());
+  private static void menuMember(Console console, FetchSNS sns)
+  {
+    int memberId = Integer.parseInt(console.readLine("メンバーID: "));
 
-        System.out.println("1 - メンバー情報");
-        System.out.println("2 - 日記");
-        System.out.println("3 - メッセージ");
-        System.out.println("4 - レビュー");
-        select = parseInt(console.readLine("番号を入力してください: "));
+    Member member = sns.getMember(memberId);
 
-        switch (select)
-        {
-          case 1:
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-          case 4:
-            break;
-          case 0:
-          default:
-            break;
-        }
-      }
-      else if (select == 2)
-      {
-        Integer comId;
-        comId = Integer.parseInt(console.readLine("コミュニティID: "));
+    System.out.println();
+    System.out.println("メンバー名: " + member.getName());
+    System.out.println("1 - メンバー情報");
+    System.out.println("2 - 日記");
+    System.out.println("3 - メッセージ");
+    System.out.println("4 - レビュー");
+    int select = parseInt(console.readLine("番号を入力してください: "));
 
-        Community com = sns.getCommunity(comId);
+    switch (select)
+    {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 0:
+      default:
+        break;
+    }
+  }
 
-        System.out.println("コミュニティ名: " + com.getName());
+  private static void menuCommunity(Console console, FetchSNS sns)
+  {
+    int comId = Integer.parseInt(console.readLine("コミュニティID: "));
+    Community com = sns.getCommunity(comId);
 
-        System.out.println("1 - コミュニティ情報");
-        System.out.println("2 - トピック");
-        System.out.println("3 - イベント");
-        System.out.println("0 - 戻る");
-        select = parseInt(console.readLine("番号を入力してください: "));
-
-        switch (select)
-        {
-          case 1:
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-          case 0:
-          default:
-            break;
-        }
-      }
+    System.out.println();
+    System.out.println("コミュニティ名: " + com.getName());
+    System.out.println("1 - コミュニティ情報");
+    System.out.println("2 - トピック");
+    System.out.println("3 - イベント");
+    System.out.println("0 - 戻る");
+    int select = parseInt(console.readLine("番号を入力してください: "));
+    switch (select)
+    {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 0:
+      default:
+        break;
     }
   }
 }
