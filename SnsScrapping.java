@@ -63,6 +63,10 @@ public class SnsScrapping
       case 1:
         break;
       case 2:
+        for (Diary diary : member.getDiaryTable())
+        {
+          System.out.println(diary.getDiaryId());
+        }
         break;
       case 3:
         break;
