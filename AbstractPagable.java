@@ -49,13 +49,8 @@ public abstract class AbstractPagable<T> implements Iterable<T>
     }
   }
 
-  public T get(int count)
+  protected T get(int count)
   {
-    if (getTotal() < count)
-    {
-      return null;
-    }
-
     while (getLastFetched() < count)
     {
       fetchNextPage();

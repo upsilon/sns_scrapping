@@ -1,9 +1,10 @@
 import java.util.*;
+import java.text.*;
 
 public class Comment
 {
   private int       number    = -1;
-  private int       member_id = -1;
+  private Member    member    = null;
   private String    body      = null;
   private String[]  image_url = new String[3];
   private GregorianCalendar created_at = null;
@@ -13,9 +14,9 @@ public class Comment
     this.number = number;
   }
 
-  public void setMemberId(int member_id)
+  public void setMember(Member member)
   {
-    this.member_id = member_id;
+    this.member = member;
   }
 
   public void setBody(String body)
@@ -28,6 +29,22 @@ public class Comment
     this.image_url = image_url;
   }
 
+  public void setCreatedAt(String created_at)
+  {
+    try
+    {
+      GregorianCalendar gc = new GregorianCalendar();
+      DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+      gc.setTime(df.parse(created_at));
+
+      setCreatedAt(gc);
+    }
+    catch (ParseException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
   public void setCreatedAt(GregorianCalendar created_at)
   {
     this.created_at = created_at;
@@ -38,9 +55,9 @@ public class Comment
     return number;
   }
 
-  public int getMemberId()
+  public Member getMember()
   {
-    return member_id;
+    return member;
   }
 
   public String getBody()
