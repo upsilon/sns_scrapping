@@ -23,6 +23,8 @@ public class Member
   protected int community_num = -1;
   protected ArrayList<Community> communities = new ArrayList<Community>();
 
+  protected DiaryTable diaryTable;
+
   private static ScrappingScript scrapMypage = null;
   private static ScrappingScript scrapProfile = null;
   private static ScrappingScript scrapProfileImages = null;
@@ -46,6 +48,7 @@ public class Member
   {
     this.sns = sns;
     this.member_id = member_id;
+    this.diaryTable = new DiaryTable(sns, this);
   }
 
   public int getMemberId()
@@ -93,6 +96,11 @@ public class Member
   {
     fetchFavoritesIf(favorite_num != favorites.size());
     return favorites.toArray(new Member[0]);
+  }
+
+  public DiaryTable getDiaryTable()
+  {
+    return diaryTable;
   }
 
   /*
