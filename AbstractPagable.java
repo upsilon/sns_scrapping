@@ -3,12 +3,6 @@ import java.util.*;
 public abstract class AbstractPagable<T> implements Iterable<T>
 {
   protected boolean hasNoNext = false;
-  protected Itr<T> itr;
-
-  public AbstractPagable()
-  {
-    itr = new Itr<T>(this);
-  }
 
   protected void fetchFirstPage()
   {
@@ -61,7 +55,7 @@ public abstract class AbstractPagable<T> implements Iterable<T>
 
   public Iterator<T> iterator()
   {
-    return itr;
+    return new Itr<T>(this);
   }
 
   protected abstract int getLastFetched();
