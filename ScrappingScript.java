@@ -132,15 +132,14 @@ public class ScrappingScript
 
   public ScrappingResult scrappingAll(String str)
   {
-    HashMap<String, ArrayList<String>> result =
-      new HashMap<String, ArrayList<String>>();
+    HashMap<String, List<String>> result = new HashMap<String, List<String>>();
 
     for (Map.Entry<String, ScrappingPattern> entry : pattern.entrySet())
     {
       ScrappingPattern pattern = entry.getValue();
       Matcher matcher = pattern.pattern.matcher(str);
 
-      ArrayList<String> list = new ArrayList<String>();
+      LinkedList<String> list = new LinkedList<String>();
       while (matcher.find())
       {
         Matcher replaceMatch = pattern.pattern.matcher(str);
@@ -183,7 +182,7 @@ public class ScrappingScript
 
     System.err.println(" * 結果出力");
 
-    for (Map.Entry<String, ArrayList<String>> entry : result)
+    for (Map.Entry<String, List<String>> entry : result)
     {
       System.out.print(entry.getKey() + " (" + entry.getValue().size() + "): ");
       System.out.println(entry.getValue());
@@ -193,7 +192,7 @@ public class ScrappingScript
   private static String readAll(String file)
     throws FileNotFoundException, IOException
   {
-    BufferedReader reader = new  BufferedReader(new FileReader(file));
+    BufferedReader reader = new BufferedReader(new FileReader(file));
     StringBuilder text = new StringBuilder();
     String line;
     while ((line = reader.readLine()) != null)

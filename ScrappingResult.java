@@ -1,24 +1,24 @@
 import java.util.*;
 
 public class ScrappingResult
-  implements Iterable<Map.Entry<String, ArrayList<String>>>
+  implements Iterable<Map.Entry<String, List<String>>>
 {
-  private HashMap<String, ArrayList<String>> result;
+  private HashMap<String, List<String>> result;
 
-  public ScrappingResult(HashMap<String, ArrayList<String>> result)
+  public ScrappingResult(HashMap<String, List<String>> result)
   {
     this.result = result;
   }
 
   public String getOne(String key)
   {
-    ArrayList<String> list = result.get(key);
+    List<String> list = result.get(key);
     return list.isEmpty() ? null : list.get(0);
   }
 
   public List<String> getMulti(String key)
   {
-    ArrayList<String> list = result.get(key);
+    List<String> list = result.get(key);
     return list.isEmpty() ? null : list;
   }
 
@@ -26,11 +26,12 @@ public class ScrappingResult
   {
     HashMap<String, String> result = new HashMap<String, String>();
 
-    List<String> list1 = getMulti(key1);
-    List<String> list2 = getMulti(key2);
-    for (int i = 0; i < list1.size(); i++)
+    Iterator<String> iter1 = getMulti(key1).iterator();
+    Iterator<String> iter2 = getMulti(key2).iterator();
+
+    while (iter1.hasNext())
     {
-      result.put(list1.get(i), list2.get(i));
+      result.put(iter1.next(), iter2.next());
     }
 
     return result;
@@ -41,7 +42,7 @@ public class ScrappingResult
     return new MapIterable(this, keys);
   }
 
-  public Iterator<Map.Entry<String, ArrayList<String>>> iterator()
+  public Iterator<Map.Entry<String, List<String>>> iterator()
   {
     return result.entrySet().iterator();
   }
