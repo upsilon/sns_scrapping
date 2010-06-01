@@ -151,7 +151,7 @@ public class ScrappingScript
         replaceMatch.matches();
         for (int i = 0; i <= replaceMatch.groupCount(); i++)
         {
-          output = output.replaceAll("\\$" + i + "(?!\\d)", replaceMatch.group(i));
+          output = output.replaceAll("\\$" + i + "(?!\\d)", Matcher.quoteReplacement(replaceMatch.group(i)));
         }
 
         list.add(output);
