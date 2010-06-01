@@ -15,8 +15,8 @@ public class Diary extends AbstractPagable<Comment>
   protected PublicEnum  public_enum = null;
   protected String[]    image_url   = new String[3];
 
-  protected Comment[] comments;
-  protected int comment_pos;
+  protected LinkedList<Comment> comments;
+  protected int total = -1;
 
   private int page = 1;
 
@@ -39,6 +39,8 @@ public class Diary extends AbstractPagable<Comment>
   {
     this.sns = sns;
     this.diary_id = diary_id;
+
+    comments = new LinkedList<Comment>();
   }
 
   public int getDiaryId()
@@ -79,17 +81,17 @@ public class Diary extends AbstractPagable<Comment>
   public Comment[] getComments()
   {
     fetchRemainPagesIf(hasNoNext);
-    return comments;
+    return comments.toArray(new Comment[0]);
   }
 
   protected int getLastFetched()
   {
-    return comments.length - comment_pos;
+    return comments.size();
   }
 
   protected int getTotal()
   {
-    return comments.length;
+    return total;
   }
 
   protected boolean fetchNextPage()
@@ -108,28 +110,31 @@ public class Diary extends AbstractPagable<Comment>
       String html = http.get(sns.getUrl(), get);
       ScrappingResult scrap = scrapDiary.scrappingAll(html);
 
-      List<String>
-        c_id = scrap.getMulti("comment_id"),
-        c_date = scrap.getMulti("comment_date"),
-        c_member_id = scrap.getMulti("comment_member_id"),
-        c_member_name = scrap.getMulti("comment_member_name"),
-        c_body = scrap.getMulti("comment_body");
+      ListIterator<Comment> comments_iter = comments.listIterator(); // commentsの先頭を指す
 
-      comments = new Comment[parseInt(c_id.get(0)) + c_id.size() - 1];
+      Iterable<Map<String, String>> c_iterable =
+        scrap.getMapIterable("comment_id", "comment_date",
+          "comment_member_id", "comment_member_name", "comment_body");
 
-      for (int i = 0; i < c_id.size(); i++)
+      for (Map<String, String> c_map : c_iterable)
       {
-        int id = parseInt(c_id.get(i));
+        int id = parseInt(c_map.get("comment_id"));
 
-        Member m = sns.getMember(parseInt(c_member_id.get(i)));
-        m.name = c_member_name.get(i);
+        Member m = sns.getMember(parseInt(c_map.get("comment_member_id")));
+        m.name = c_map.get("comment_member_name");
 
         Comment c = new Comment(id);
         c.setMember(m);
-        c.setCreatedAt(c_date.get(i));
-        c.setBody(c_body.get(i));
+        c.setCreatedAt(c_map.get("comment_date"));
+        c.setBody(c_map.get("comment_body"));
 
-        comments[id] = c;
+        comments_iter.add(c);
+      }
+
+      if (1 == page)
+      {
+        Comment c = comments.getLast();
+        total = c.getNumber();
       }
 
       page++;
@@ -144,7 +149,7 @@ public class Diary extends AbstractPagable<Comment>
 
   protected Comment doGetEntry(int count)
   {
-    return comments[count];
+    return comments.get(count);
   }
 
   enum PublicEnum
