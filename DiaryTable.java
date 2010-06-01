@@ -66,9 +66,15 @@ public class DiaryTable extends AbstractPagable<Diary>
 
       total = parseInt(scrap.getOne("total"));
 
-      for (String diary_id : scrap.getMulti("diary_id"))
+      Iterable<Map<String, String>> d_itr =
+        scrap.getMapIterable("diary_id", "diary_title");
+
+      for (Map<String, String> d_map : d_itr)
       {
-        diaries.add(new Diary(sns, parseInt(diary_id)));
+        Diary diary = new Diary(sns, parseInt(d_map.get("diary_id")));
+        diary.title = d_map.get("diary_title");
+
+        diaries.add(diary);
       }
 
       page++;

@@ -3,6 +3,38 @@ match {
 <div class="pagerRelative">.*<p class="number">(\d+)件中 \d+件～\d+件を表示</p>.*</div>
 }
 
+[diary_public]
+multi = true
+match {
+<p class="public">
+（(.+?)）
+</p>
+}
+
+[diary_date]
+multi = true
+match {
+<dt>(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+}
+output {
+$1/$2 $3:$4
+}
+
+[diary_title]
+multi = true
+match {
+<p class="heading">(.+?)</p>
+}
+
+[diary_body]
+multi = true
+match {
+(?s)<div class="body">
+<p class="text">
+(.+?)</p>
+</div>
+}
+
 [diary_id]
 multi = true
 match {
