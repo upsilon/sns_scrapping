@@ -1,0 +1,29 @@
+[topic_date]
+multi = true
+match {
+<dt>(\d+)月(\d+)日<br />(\d+):(\d+)</dt>
+}
+output {
+$1/$2 $3:$4
+}
+
+[topic_id]
+multi = true
+match {
+<p class="heading"><a href="\./\?m=pc&amp;a=page_c_topic_detail&amp;target_c_commu_topic_id=(\d+)">.+?</a></p>
+}
+
+[topic_title]
+multi = true
+match {
+<p class="heading"><a href="\./\?m=pc&amp;a=page_c_topic_detail&amp;target_c_commu_topic_id=\d+">(.+?)</a></p>
+}
+
+[topic_body]
+multi = true
+match {
+(?s)<div class="body">
+<p class="text">(.+?)</p>
+</div>
+}
+
