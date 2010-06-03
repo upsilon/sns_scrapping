@@ -14,10 +14,14 @@ public class Community
   protected ArrayList<Member> member;
   protected PublicEnum public_enum = null;
 
+  protected TopicTable topicTable;
+
   public Community(FetchSNS sns, int community_id)
   {
     this.sns = sns;
     this.community_id = community_id;
+
+    topicTable = new TopicTable(sns, this);
   }
 
   public int getCommunityId()
@@ -47,6 +51,11 @@ public class Community
   {
     fetchCommunityIf(null == public_enum);
     return public_enum;
+  }
+
+  public TopicTable getTopicTable()
+  {
+    return topicTable;
   }
 
   protected void fetchCommunityIf(boolean bool)
