@@ -30,13 +30,17 @@ public class CommunityTable
 
   protected List<Community> toCommunityList(List<String> id, List<String> name)
   {
-    ArrayList<Community> result = new ArrayList<Community>();
-    for (int i = 0; i < id.size(); i++)
+    ListIterator<String> id_itr = id.listIterator();
+    ListIterator<String> name_itr = name.listIterator();
+    LinkedList<Community> result = new LinkedList<Community>();
+
+    while (id_itr.hasNext())
     {
-      Community c = getCommunity(parseInt(id.get(i)));
-      c.name = name.get(i);
+      Community c = getCommunity(parseInt(id_itr.next()));
+      c.name = name_itr.next();
       result.add(c);
     }
+
     return result;
   }
 }

@@ -30,13 +30,17 @@ public class MemberTable
 
   protected List<Member> toMemberList(List<String> id, List<String> name)
   {
-    ArrayList<Member> result = new ArrayList<Member>();
-    for (int i = 0; i < id.size(); i++)
+    ListIterator<String> id_itr = id.listIterator();
+    ListIterator<String> name_itr = name.listIterator();
+    LinkedList<Member> result = new LinkedList<Member>();
+
+    while (id_itr.hasNext())
     {
-      Member m = getMember(parseInt(id.get(i)));
-      m.name = name.get(i);
+      Member m = getMember(parseInt(id_itr.next()));
+      m.name = name_itr.next();
       result.add(m);
     }
+
     return result;
   }
 }
