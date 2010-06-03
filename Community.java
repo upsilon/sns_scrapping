@@ -15,6 +15,7 @@ public class Community
   protected PublicEnum public_enum = null;
 
   protected TopicTable topicTable;
+  protected EventTable eventTable;
 
   public Community(FetchSNS sns, int community_id)
   {
@@ -22,6 +23,7 @@ public class Community
     this.community_id = community_id;
 
     topicTable = new TopicTable(sns, this);
+    eventTable = new EventTable(sns, this);
   }
 
   public int getCommunityId()
@@ -56,6 +58,11 @@ public class Community
   public TopicTable getTopicTable()
   {
     return topicTable;
+  }
+
+  public EventTable getEventTable()
+  {
+    return eventTable;
   }
 
   protected void fetchCommunityIf(boolean bool)
