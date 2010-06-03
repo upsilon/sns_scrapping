@@ -15,9 +15,7 @@ public class Diary extends AbstractPagable<Comment>
   protected PublicEnum  public_enum = null;
   protected String[]    image_url   = new String[3];
 
-  protected LinkedList<Comment> comments;
   protected int total = -1;
-
   private int page = 1;
 
   private static ScrappingScript scrapDiary = null;
@@ -39,8 +37,6 @@ public class Diary extends AbstractPagable<Comment>
   {
     this.sns = sns;
     this.diary_id = diary_id;
-
-    comments = new LinkedList<Comment>();
   }
 
   public int getDiaryId()
@@ -80,13 +76,8 @@ public class Diary extends AbstractPagable<Comment>
 
   public Comment[] getComments()
   {
-    fetchRemainPagesIf(hasNoNext);
-    return comments.toArray(new Comment[0]);
-  }
-
-  protected int getLastFetched()
-  {
-    return comments.size();
+    fetchRemainPages();
+    return list.toArray(new Comment[0]);
   }
 
   protected int getTotal()
@@ -94,7 +85,7 @@ public class Diary extends AbstractPagable<Comment>
     return total;
   }
 
-  protected boolean fetchNextPage()
+  protected void fetchNextPage(List<Comment> list)
   {
     try
     {
@@ -110,7 +101,7 @@ public class Diary extends AbstractPagable<Comment>
       String html = http.get(sns.getUrl(), get);
       ScrappingResult scrap = scrapDiary.scrappingAll(html);
 
-      ListIterator<Comment> comments_iter = comments.listIterator(); // commentsの先頭を指す
+      ListIterator<Comment> comments_iter = list.listIterator(); // commentsの先頭を指す
 
       Iterable<Map<String, String>> c_iterable =
         scrap.getMapIterable("comment_id", "comment_date",
@@ -133,7 +124,7 @@ public class Diary extends AbstractPagable<Comment>
 
       if (1 == page)
       {
-        Comment c = comments.getLast();
+        Comment c = list.get(list.size() - 1);
         total = c.getNumber();
       }
 
@@ -143,13 +134,6 @@ public class Diary extends AbstractPagable<Comment>
     {
       e.printStackTrace();
     }
-
-    return getTotal() == getLastFetched();
-  }
-
-  protected Comment doGetEntry(int count)
-  {
-    return comments.get(count);
   }
 
   enum PublicEnum

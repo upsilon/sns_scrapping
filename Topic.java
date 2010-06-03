@@ -9,7 +9,6 @@ public class Topic extends AbstractPagable<Comment>
   protected Member    member    = null;
   protected String    title     = null;
   protected String    body      = null;
-  protected ArrayList<Comment> comments = new ArrayList<Comment>();
 
   private int total = -1;
 
@@ -50,13 +49,8 @@ public class Topic extends AbstractPagable<Comment>
 
   public Comment[] getComments()
   {
-    fetchRemainPagesIf(hasNoNext);
-    return comments.toArray(new Comment[0]);
-  }
-
-  protected int getLastFetched()
-  {
-    return comments.size();
+    fetchRemainPages();
+    return list.toArray(new Comment[0]);
   }
 
   protected int getTotal()
@@ -64,13 +58,7 @@ public class Topic extends AbstractPagable<Comment>
     return total;
   }
 
-  protected boolean fetchNextPage()
+  protected void fetchNextPage(List<Comment> list)
   {
-    return true;
-  }
-
-  protected Comment doGetEntry(int count)
-  {
-    return comments.get(count);
   }
 }

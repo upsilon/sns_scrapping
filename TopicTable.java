@@ -7,7 +7,6 @@ public class TopicTable extends AbstractPagable<Topic>
 {
   private FetchSNS sns;
   private Community community;
-  private LinkedList<Topic> topics;
 
   private int page = 1;
   private int total = -1;
@@ -31,25 +30,14 @@ public class TopicTable extends AbstractPagable<Topic>
   {
     this.sns = sns;
     this.community = community;
-    this.topics = new LinkedList<Topic>();
-  }
-
-  protected int getLastFetched()
-  {
-    return topics.size();
   }
 
   protected int getTotal()
   {
-    if (-1 == total)
-    {
-      fetchNextPage();
-    }
-
     return total;
   }
 
-  protected boolean fetchNextPage()
+  protected void fetchNextPage(List<Topic> list)
   {
     try
     {
@@ -72,7 +60,7 @@ public class TopicTable extends AbstractPagable<Topic>
         Topic topic = new Topic(sns, parseInt(t_map.get("topic_id")));
         topic.title = t_map.get("topic_title");
 
-        topics.add(topic);
+        list.add(topic);
       }
 
       page++;
@@ -81,12 +69,5 @@ public class TopicTable extends AbstractPagable<Topic>
     {
       e.printStackTrace();
     }
-
-    return getTotal() == getLastFetched();
-  }
-
-  protected Topic doGetEntry(int count)
-  {
-    return topics.get(count);
   }
 }

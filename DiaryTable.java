@@ -7,7 +7,6 @@ public class DiaryTable extends AbstractPagable<Diary>
 {
   private FetchSNS sns;
   private Member member;
-  private ArrayList<Diary> diaries;
 
   private int page = 1;
   private int total = -1;
@@ -31,25 +30,14 @@ public class DiaryTable extends AbstractPagable<Diary>
   {
     this.sns = sns;
     this.member = member;
-    this.diaries = new ArrayList<Diary>();
-  }
-
-  protected int getLastFetched()
-  {
-    return diaries.size();
   }
 
   protected int getTotal()
   {
-    if (-1 == total)
-    {
-      fetchNextPage();
-    }
-
     return total;
   }
 
-  protected boolean fetchNextPage()
+  protected void fetchNextPage(List<Diary> list)
   {
     try
     {
@@ -74,7 +62,7 @@ public class DiaryTable extends AbstractPagable<Diary>
         Diary diary = new Diary(sns, parseInt(d_map.get("diary_id")));
         diary.title = d_map.get("diary_title");
 
-        diaries.add(diary);
+        list.add(diary);
       }
 
       page++;
@@ -83,12 +71,5 @@ public class DiaryTable extends AbstractPagable<Diary>
     {
       e.printStackTrace();
     }
-
-    return getTotal() == getLastFetched();
-  }
-
-  protected Diary doGetEntry(int count)
-  {
-    return diaries.get(count);
   }
 }

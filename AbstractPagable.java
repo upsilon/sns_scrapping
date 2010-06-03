@@ -2,16 +2,16 @@ import java.util.*;
 
 public abstract class AbstractPagable<T> implements Iterable<T>
 {
-  protected boolean hasNoNext = false;
+  protected List<T> list = new ArrayList<T>();
 
   protected void fetchFirstPage()
   {
-    if (1 > getLastFetched())
+    if (1 <= getLastFetched())
     {
       return;
     }
 
-    hasNoNext = fetchNextPage();
+    fetchNextPage(list);
   }
 
   protected void fetchFirstPageIf(boolean bool)
@@ -24,14 +24,9 @@ public abstract class AbstractPagable<T> implements Iterable<T>
 
   protected void fetchRemainPages()
   {
-    if (getTotal() == getLastFetched())
+    while (getLastFetched() != getTotal())
     {
-      return;
-    }
-
-    while (!hasNoNext)
-    {
-      hasNoNext = fetchNextPage();
+      fetchNextPage(list);
     }
   }
 
@@ -43,26 +38,18 @@ public abstract class AbstractPagable<T> implements Iterable<T>
     }
   }
 
-  protected T get(int count)
-  {
-    while (getLastFetched() < count)
-    {
-      fetchNextPage();
-    }
-
-    return doGetEntry(count - 1);
-  }
-
   public Iterator<T> iterator()
   {
     return new Itr<T>(this);
   }
 
-  protected abstract int getLastFetched();
-  protected abstract int getTotal();
+  protected int getLastFetched()
+  {
+    return list.size();
+  }
 
-  protected abstract boolean fetchNextPage();
-  protected abstract T doGetEntry(int count);
+  protected abstract int getTotal();
+  protected abstract void fetchNextPage(List<T> list);
 
   class Itr<T> implements Iterator<T>
   {
@@ -72,17 +59,27 @@ public abstract class AbstractPagable<T> implements Iterable<T>
     public Itr(AbstractPagable<T> pager)
     {
       this.pager = pager;
-      this.count = 1;
+      this.count = 0;
     }
 
     public boolean hasNext()
     {
-      return pager.getTotal() >= count;
+      return pager.getTotal() > count;
     }
 
     public T next()
     {
-      return pager.get(count++);
+      if (!hasNext())
+      {
+        return null;
+      }
+
+      if (pager.getLastFetched() < count)
+      {
+        pager.fetchNextPage(pager.list);
+      }
+
+      return pager.list.get(count++);
     }
 
     public void remove()
